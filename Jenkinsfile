@@ -12,6 +12,7 @@ pipeline {
                     rtMaven.tool = MAVEN
                     rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
                     rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+                    rtMaven.deployer.deployArtifacts = false //we'll deploy in a proper stage
                 }
             }
         }
