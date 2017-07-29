@@ -18,7 +18,7 @@ pipeline {
         stage('Cleanup') {
           steps {
               script {
-                if(CLEAN_REPO) {
+                if(CLEAN_REPO.toBoolean()) {
                     echo "Cleaning local repo because CLEAN_REPO==$CLEAN_REPO"
                     sh 'rm -rf ~/.m2/repository'
                 }
