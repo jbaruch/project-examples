@@ -36,6 +36,7 @@ pipeline {
             steps {
                 script {
                     rtMaven.deployer.deployArtifacts buildInfo
+                    server.publishBuildInfo buildInfo
                 }
             } 
         }
