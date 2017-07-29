@@ -1,6 +1,5 @@
 pipeline {
     agent any
-    def rtMaven
     stages {
         stage('Cleanup') {
           steps {
