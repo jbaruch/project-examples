@@ -19,7 +19,7 @@ pipeline {
           steps {
               script {
                 if(CLEAN_REPO) {
-                    echo 'Cleaning local repo'
+                    echo "Cleaning local repo because CLEAN_REPO==$CLEAN_REPO"
                     sh 'rm -rf ~/.m2/repository'
                 }
              }
