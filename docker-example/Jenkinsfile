@@ -4,7 +4,7 @@ pipeline {
     stage('Setup') {
       steps {
         script {
-          git url: 'https://github.com/jbaruch/docker-examples'
+          git url: 'https://github.com/jbaruch/project-examples'
           server = Artifactory.server ARTIFACTORY
           buildInfo = Artifactory.newBuildInfo()
           rtDocker = Artifactory.docker credentialsId: ARTIFACTORY_CREDENTIALS
