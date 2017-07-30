@@ -1,0 +1,10 @@
+{
+  "files": [
+    {
+      "pattern": "libs-snapshot/**/*.war",
+      "target": "war/app.war",
+      "flat": "true",
+      "build": "maven-example"
+    }
+  ]
+}
