@@ -9,6 +9,11 @@ pipeline {
           buildInfo = Artifactory.newBuildInfo()
           rtDocker = Artifactory.docker credentialsId: ARTIFACTORY_CREDENTIALS, host: "tcp://127.0.0.1:1234"
           buildInfo.env.capture = true
+          scanConfig = [
+            'buildName'      : buildInfo.name,
+            'buildNumber'    : buildInfo.number
+          ]
+          'curl -fL https://getcli.jfrog.io | sh'
         }
       }
     }
@@ -38,6 +43,25 @@ pipeline {
           rtDocker.push(tagDockerApp, 'docker', buildInfo)
           buildInfo.env.collect()
           rtServer.publishBuildInfo buildInfo
+        }
+      }
+    }
+    stage('Xray Scan') {
+      steps {
+        script {
+          scanResult = server.xrayScan scanConfig
+          print scanResult
+          if(FAIL_ON_XRAY.toBoolean() && scanResult.foundVulnerable) {
+            error("Build failed because ${scanResult.scanMessage}")
+          }
+        }
+      }
+    }
+    stage('Promote'){
+      steps {
+        script {
+          "jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}"
+          "jfrog rt bpr ${$buildInfo.name} ${$buildInfo.number} docker-prod-local"
         }
       }
     }
