@@ -13,8 +13,8 @@ pipeline {
             'buildName'      : buildInfo.name,
             'buildNumber'    : buildInfo.number
           ]
-          'curl -fL https://getcli.jfrog.io | sh'
-          print "jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}"
+          sh 'curl -fL https://getcli.jfrog.io | sh'
+          print sh script: "sh jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}", returnStdout: true
         }
       }
     }
@@ -61,7 +61,7 @@ pipeline {
     stage('Promote'){
       steps {
         script {
-          "jfrog rt bpr ${$buildInfo.name} ${$buildInfo.number} docker-prod-local"
+          sh "jfrog rt bpr ${$buildInfo.name} ${$buildInfo.number} docker-prod-local"
         }
       }
     }
