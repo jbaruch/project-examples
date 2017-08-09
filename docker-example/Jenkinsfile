@@ -14,7 +14,9 @@ pipeline {
             'buildNumber'    : buildInfo.number
           ]
           sh 'curl -fL https://getcli.jfrog.io | sh'
-          def configOut = sh script: "sh jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}", returnStdout: true
+          sh 'chmod +x jfrog'
+          sh 'frog --version'
+          def configOut = sh script: "sh jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}", returnStdout: false
           print configOut
         }
       }
