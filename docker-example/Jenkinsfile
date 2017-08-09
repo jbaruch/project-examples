@@ -71,6 +71,6 @@ pipeline {
 
 String jfrogCli(String command){
   """#!/bin/bash
-    bin/jfrog ${command}
+    jfrog ${command}
    """
 }
