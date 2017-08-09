@@ -14,10 +14,8 @@ pipeline {
             'buildNumber'    : buildInfo.number
           ]
           sh 'curl -fL https://getcli.jfrog.io | sh'
-          sh 'chmod +x jfrog'
-          sh 'jfrog --version'
-          def configOut = sh script: "sh jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}", returnStdout: false
-          print configOut
+          sh script: jfrogCli('--version'), returnStdout: false
+          sh jfrogCli("rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}")
         }
       }
     }
@@ -64,9 +62,15 @@ pipeline {
     stage('Promote'){
       steps {
         script {
-          sh "jfrog rt bpr ${$buildInfo.name} ${$buildInfo.number} docker-prod-local"
+          sh jfrogCli("rt bpr ${$buildInfo.name} ${$buildInfo.number} docker-prod-local")
         }
       }
     }
   }
+}
+
+String jfrogCli(String command){
+  """#!/bin/bash
+    bin/jfrog ${command}
+   """
 }
