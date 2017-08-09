@@ -62,7 +62,7 @@ pipeline {
     stage('Promote'){
       steps {
         script {
-          def promotionCommand = "rt bpr ${$buildInfo.name} ${$buildInfo.number} docker-prod-local"
+          String promotionCommand = "rt bpr ${buildInfo.name} ${buildInfo.number} docker-prod-local"
           sh jfrogCli(promotionCommand)
         }
       }
