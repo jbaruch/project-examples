@@ -11,7 +11,8 @@ pipeline {
           buildInfo.env.capture = true
           scanConfig = [
             'buildName'      : buildInfo.name,
-            'buildNumber'    : buildInfo.number
+            'buildNumber'    : buildInfo.number,
+            'failBuild'      : false
           ]
           sh 'curl -fL https://getcli.jfrog.io | sh'
           sh script: jfrogCli('--version'), returnStdout: false
