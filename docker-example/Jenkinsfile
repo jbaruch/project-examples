@@ -54,7 +54,7 @@ pipeline {
           scanResult = rtServer.xrayScan scanConfig
           print scanResult
           if(FAIL_ON_XRAY.toBoolean() && scanResult.foundVulnerable) {
-            error("Build failed because ${scanResult.scanMessage}")
+            error("Build failed because ${scanResult.scanMassege}")
           }
         }
       }
