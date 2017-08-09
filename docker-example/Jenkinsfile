@@ -14,6 +14,7 @@ pipeline {
             'buildNumber'    : buildInfo.number
           ]
           'curl -fL https://getcli.jfrog.io | sh'
+          print "jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}"
         }
       }
     }
@@ -49,7 +50,7 @@ pipeline {
     stage('Xray Scan') {
       steps {
         script {
-          scanResult = server.xrayScan scanConfig
+          scanResult = rtServer.xrayScan scanConfig
           print scanResult
           if(FAIL_ON_XRAY.toBoolean() && scanResult.foundVulnerable) {
             error("Build failed because ${scanResult.scanMessage}")
@@ -60,7 +61,6 @@ pipeline {
     stage('Promote'){
       steps {
         script {
-          "jfrog rt config --url ${rtServer.url} --user ${rtServer.username} --password ${rtServer.password}"
           "jfrog rt bpr ${$buildInfo.name} ${$buildInfo.number} docker-prod-local"
         }
       }
